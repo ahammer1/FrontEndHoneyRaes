@@ -17,5 +17,18 @@ const getSingleTicket = (ticketId) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { getSingleTicket
+const deleteSingleServiceTicket = (ticketId) => new Promise((resolve, reject) => {
+  fetch(`${_apiUrl}/${ticketId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
+export { getSingleTicket,
+  deleteSingleServiceTicket,
 }
