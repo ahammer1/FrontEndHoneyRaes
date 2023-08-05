@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import { Table } from "reactstrap";
-import { getServiceTickets } from "../../data/serviceTicketsData";
+import { getServiceTickets, deleteSingleServiceTicket } from "../../data/serviceTicketsData";
 import { Link } from "react-router-dom";
 
 export default function TicketsList() {
   const [tickets, setTickets] = useState([]);
 
+const ServiceTicketList = ({ serviceTickets, onTicketDeleted }) => {
+  const handleDeleteTicket = async (ticketId) => {
+    try {
+      const deletedTicket = await deleteSingleServiceTicket(ticketId);
+      onTicketDeleted(deletedTicket);
+    } catch (error) {
+      console.error('Error deleting ticket:', error);
+    }
+  };
+}
   useEffect(() => {
     getServiceTickets().then(setTickets);
   }, []);
@@ -30,6 +40,9 @@ export default function TicketsList() {
             <td>{t.dateCompleted?.split("T")[0] || "Incomplete"}</td>
             <td>
               <Link to={`${t.id}`}>Details</Link>
+            </td>
+            <td>
+              <Link to={`${t.id}`}>Delete</Link>
             </td>
           </tr>
         ))}
